@@ -1,0 +1,48 @@
+resources:
+  jobs:
+    ecommerce_data_engineering_pipeline:
+      name: Ecommerce_Data_Engineering_Pipeline
+      tasks:
+        - task_key: data_ingestion
+          disabled: false
+          email_notifications: {}
+          notebook_task:
+            notebook_path: /Workspace/Users/cbrmdazam@gmail.com/Ecommerce-Business-Analytics/data_ingestion
+            source: WORKSPACE
+          run_if: ALL_SUCCESS
+          timeout_seconds: 0
+          webhook_notifications: {}
+        - task_key: Data_Quality
+          depends_on:
+            - task_key: data_ingestion
+          disabled: false
+          email_notifications: {}
+          notebook_task:
+            notebook_path: /Workspace/Users/cbrmdazam@gmail.com/Ecommerce-Business-Analytics/Data_Quality
+            source: WORKSPACE
+          run_if: ALL_SUCCESS
+          timeout_seconds: 0
+          webhook_notifications: {}
+        - task_key: Data_Exploration
+          depends_on:
+            - task_key: Data_Quality
+          disabled: false
+          email_notifications: {}
+          notebook_task:
+            notebook_path: /Workspace/Users/cbrmdazam@gmail.com/Ecommerce-Business-Analytics/Data_Exploration
+            source: WORKSPACE
+          run_if: ALL_SUCCESS
+          timeout_seconds: 0
+          webhook_notifications: {}
+      email_notifications:
+        no_alert_for_skipped_runs: false
+      git_source:
+        git_branch: databricks workflow/job
+        git_provider: gitHub
+        git_url: https://github.com/MD5680/Ecommerce-Business-Analytics.git
+      max_concurrent_runs: 1
+      performance_target: PERFORMANCE_OPTIMIZED
+      queue:
+        enabled: true
+      timeout_seconds: 0
+      webhook_notifications: {}
